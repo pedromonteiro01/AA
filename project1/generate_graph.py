@@ -39,7 +39,7 @@ def generate_graph(n): # create a graph with n vertexes
 
 def get_adjacency_list(edges):
     adj_list = {}
-    print(sorted(edges))
+    #print(sorted(edges))
     for v1, v2 in edges:
         if v1 not in adj_list.keys():
             adj_list[v1] = list(v2)
@@ -79,12 +79,16 @@ def show_incidence_matrix(vertexes, edges):
         inc_matrix[x][i] = 1 # change matrix from 0 to 1 on (1,x)
         inc_matrix[y][i] = 1 # change matrix from 0 to 1 on (1,y) #TODO
 
-    print("\n")
     for el in inc_matrix:
         print(el)
 
-
-v,e = generate_graph(4)
-adj_list = get_adjacency_list(e) 
-show_adjacency_matrix(v, e)
-show_incidence_matrix(v,e)
+if __name__=='__main__':
+    v,e = generate_graph(4)
+    print("Vertexes: \n",v)
+    print("Edges: \n",sorted(e))
+    print("\nAdjacency List: ")
+    adj_list = get_adjacency_list(e) 
+    print("\nAdjacency Matrix: ")
+    show_adjacency_matrix(v, e)
+    print("\nIncidence Matrix: ")
+    show_incidence_matrix(v,e)

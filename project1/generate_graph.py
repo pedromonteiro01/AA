@@ -1,9 +1,9 @@
 # @Author: Pedro Monteiro
 # @Email:  pmapm@ua.pt
 
-import random, string
+import random, string, json
 
-#random.seed(97484) # seed = student number
+random.seed(97484) # seed = student number
 alphabet = list(string.ascii_lowercase) # get alphabet letters to use as vertex
 
 def generate_graph(n): # create a graph with n vertexes
@@ -24,7 +24,10 @@ def generate_graph(n): # create a graph with n vertexes
     # according to graph theory n*((n-1)/2) is the maximum number of edges
     max_edges = int(n*(n-1)/2)
     # pick a random number of edges between min and max
-    num_edges = random.choice([i for i in range(min_edges, max_edges)])
+    if n > 2:
+        num_edges = random.choice([i for i in range(min_edges, max_edges)])
+    else: # in case there is only 2 vertexes, is only available 1 edge 
+        num_edges = 1
 
     for _ in range(0, num_edges):
         while True: # because if v1 == v2 ignores and dont append an edge
@@ -76,11 +79,19 @@ def show_incidence_matrix(vertexes, edges):
     for i, e in enumerate(edges):
         x = v_list.index(e[0]) # get index of vertex 1
         y = v_list.index(e[1]) # get index of vertex 2
-        inc_matrix[x][i] = 1 # change matrix from 0 to 1 on (1,x)
-        inc_matrix[y][i] = 1 # change matrix from 0 to 1 on (1,y) #TODO
+        inc_matrix[x][i] = 1 # change matrix from 0 to 1
+        inc_matrix[y][i] = 1 # change matrix from 0 to 1
 
     for el in inc_matrix:
         print(el)
+
+def write_to_file():
+    for i in range(2,4):
+        v,e = generate_graph(i)
+        with open('graph'+str(i)+'.txt', 'w') as f:
+            f.write(json.dumps(v))
+            f.write('\n')
+            f.write(json.dumps(e))
 
 if __name__=='__main__':
     v,e = generate_graph(4)
@@ -92,3 +103,4 @@ if __name__=='__main__':
     show_adjacency_matrix(v, e)
     print("\nIncidence Matrix: ")
     show_incidence_matrix(v,e)
+    write_to_file()

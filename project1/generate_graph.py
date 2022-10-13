@@ -30,7 +30,7 @@ def generate_graph(n): # create a graph with n vertexes
         num_edges = 1
 
     for _ in range(0, num_edges):
-        while True: # because if v1 == v2 ignores and dont append an edge
+        while True: # if v1 == v2 ignores and dont append an edge
             v1 = random.choice(vertexes)[0]
             v2 = random.choice(vertexes)[0]
             if v1 != v2:
@@ -86,15 +86,17 @@ def show_incidence_matrix(vertexes, edges):
         print(el)
 
 def write_to_file():
-    for i in range(2,4):
+    for i in range(2,12):
         v,e = generate_graph(i)
-        with open('graph'+str(i)+'.txt', 'w') as f:
+        with open('graph-'+str(i)+'.txt', 'w') as f:
             f.write(json.dumps(v))
             f.write('\n')
             f.write(json.dumps(e))
 
 if __name__=='__main__':
-    v,e = generate_graph(4)
+    v = [["a", [4, 6]], ["b", [1, 3]], ["c", [4, 20]], ["d", [16, 10]], ["e", [2, 15]], ["f", [20, 16]], ["g", [4, 13]], ["h", [2, 7]], ["i", [7, 20]], ["j", [14, 13]], ["k", [5, 4]]]
+    e = [["e", "j"], ["h", "j"], ["h", "b"], ["c", "d"], ["i", "b"], ["e", "f"], ["b", "c"], ["a", "e"], ["h", "g"], ["j", "b"]]
+    #v,e = generate_graph(5)
     print("Vertexes: \n",v)
     print("Edges: \n",sorted(e))
     print("\nAdjacency List: ")

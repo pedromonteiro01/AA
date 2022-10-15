@@ -6,7 +6,7 @@ import random, string, json
 random.seed(97484) # seed = student number
 alphabet = list(string.ascii_letters) # get alphabet letters to use as vertex
 
-def generate_graph(n): # create a graph with n vertexes
+def generate_graph(n, p): # create a graph with n vertexes and p percentage
     vertexes = []
     edges = []
 
@@ -26,33 +26,35 @@ def generate_graph(n): # create a graph with n vertexes
     max_edges = int(n*(n-1)/2)
     # pick a random number of edges between min and max
     if n > 2:
-        num_edges = random.choice([i for i in range(min_edges, max_edges+1)])
+        num_edges = int(p/100 * max_edges)
     else: # in case there is only 2 vertexes, is only available 1 edge 
         num_edges = 1
 
     prev_v1 = ""
     prev_v2 = ""
     prev_v = set()
-    for _ in range(0, num_edges):
-        while True: # if v1 == v2 ignores and dont append an edge
-            v1 = random.choice(vertexes)[0]
-            v2 = random.choice(vertexes)[0]
-            prev_v.update({v1,v2})
-            prev_v1 = v1
-            prev_v2 = v2
-            # in case all vertices have at least one edge
-            if len(vertexes) == len(prev_v):
-                assert len(vertexes) == len(prev_v)
-                if v1 != v2:
-                    if (v1,v2) not in edges and (v2,v1) not in edges:
-                        edges.append((v1,v2))
-                        break
-            else: # if there is any vertex that has not been chosen => graph must be connected
-                if v1 != v2:
-                    if (v1,v2) not in edges and (v2,v1) not in edges:
-                        if (v1 != prev_v1) or (v2 != prev_v2) or (v1 != prev_v1 and v2 != prev_v2):
+    if min_edges <= num_edges <= max_edges:
+        for _ in range(0, num_edges):
+            while True: # if v1 == v2 ignores and dont append an edge
+                v1 = random.choice(vertexes)[0]
+                v2 = random.choice(vertexes)[0]
+                # in case all vertices have at least one edge
+                #input()
+                if len(vertexes) == len(prev_v):
+                    assert len(vertexes) == len(prev_v)
+                    if v1 != v2:
+                        if (v1,v2) not in edges and (v2,v1) not in edges:
                             edges.append((v1,v2))
                             break
+                else: # if there is any vertex that has not been chosen => graph must be connected
+                    # and ((v1 != prev_v1) or (v2 != prev_v2) or (v1 != prev_v1 and v2 != prev_v2))
+                    if v1 != v2 and (v1 not in prev_v or v2 not in prev_v):
+                        prev_v.update({v1,v2})
+                        prev_v1 = v1
+                        prev_v2 = v2
+                        if (v1,v2) not in edges and (v2,v1) not in edges:
+                                edges.append((v1,v2))
+                                break
 
     return vertexes, edges
 
@@ -102,19 +104,23 @@ def show_incidence_matrix(vertexes, edges):
         print(el)
 
 def write_to_file():
-    for i in range(2,50):
-        v,e = generate_graph(i)
-        with open('graph-'+str(i)+'.txt', 'w') as f:
-            f.write(json.dumps(v))
-            f.write('\n')
-            f.write(json.dumps(e))
+    percentages = [12.5, 25, 50, 75]
+    for p in percentages:
+        for i in range(2,21):
+            v,e = generate_graph(i,p)
+            if len(e):
+                with open('graph'+str(i)+'-'+str(p)+'.txt', 'w') as f:
+                    f.write(json.dumps(v))
+                    f.write('\n')
+                    f.write(json.dumps(e))
 
 if __name__=='__main__':
-    #v = [["a", [4, 6]], ["b", [1, 3]], ["c", [4, 20]], ["d", [16, 10]], ["e", [2, 15]], ["f", [20, 16]], ["g", [4, 13]], ["h", [2, 7]], ["i", [7, 20]], ["j", [14, 13]], ["k", [5, 4]]]
-    #e = [["e", "j"], ["h", "j"], ["h", "b"], ["c", "d"], ["i", "b"], ["e", "f"], ["b", "c"], ["a", "e"], ["h", "g"], ["j", "b"]]
-    v,e = generate_graph(11)
+    v = [["a", [3, 1]], ["b", [17, 9]], ["c", [15, 18]], ["d", [14, 7]], ["e", [6, 13]], ["f", [14, 10]], ["g", [5, 7]], ["h", [16, 10]], ["i", [9, 2]], ["j", [15, 16]], ["k", [13, 11]], ["l", [1, 11]], ["m", [11, 17]], ["n", [7, 10]], ["o", [16, 11]], ["p", [10, 7]], ["q", [15, 11]]]
+    e = [["f", "g"], ["h", "f"], ["c", "g"], ["o", "d"], ["b", "k"], ["a", "q"], ["a", "e"], ["l", "k"], ["q", "p"], ["i", "e"], ["m", "e"], ["g", "n"], ["q", "j"], ["c", "e"], ["g", "m"], ["a", "p"], ["h", "k"], ["l", "p"], ["m", "b"], ["b", "l"], ["m", "a"], ["q", "e"], ["f", "c"], ["n", "k"], ["b", "j"], ["n", "q"], ["g", "i"], ["g", "o"], ["q", "f"], ["k", "f"], ["q", "m"], ["f", "a"], ["g", "e"], ["j", "m"]]
+    #v,e = generate_graph(17, 12.5)
     print("Vertexes: \n",v)
     print("Edges: \n",sorted(e))
+    print("num edges: ", len(e))
     print("\nAdjacency List: ")
     adj_list = get_adjacency_list(e) 
     print("\nAdjacency Matrix: ")

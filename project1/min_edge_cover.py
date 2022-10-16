@@ -3,33 +3,43 @@
 
 import json, itertools, time
 
-def get_graph():
-    with open('graph-10.txt') as f:
-        v = json.loads(f.readline())
-        e = json.loads(f.readline())
-    f.close()
+from matplotlib.pyplot import get
+import os
 
-    return v,e
+
+def get_graph(n, p):
+    file = 'graph'+str(n)+'-'+str(p)+'.txt'
+    if os.path.exists(file):
+        with open(file) as f:
+            return json.loads(f.readline()), json.loads(f.readline())
 
 def find_solution(v,e):
     start = time.time()
     v_list = {vertex[0] for vertex in v} # set with all vertexes
-    dic2 = {}
 
     for i in range(1, len(v_list)+1):
         for data in itertools.combinations(e, i): # get all subsets of edges
-            dic = {i: set()}
+            temp_set = set()
             #print("data: ",list(data))
             for item in data:
-                dic[i].add(item[0])
-                dic[i].add(item[1])
-                if sorted(v_list) == sorted(dic[i]): # only covering edges here!
-                    dic2[i] = dic
+                temp_set.update({item[0], item[1]}) # add {'x1', 'x2} to set
+                if sorted(v_list) == sorted(temp_set): # only covering edges here!
                     end = (time.time() - start)
-                    print(end)
+                    print("time: ", end)
                     return i
-
+                    
     return None
 
-v,e = get_graph()
-print(find_solution(v,e))
+percentages = [12.5, 25, 50, 75]
+
+for i in range(2,5):
+    for p in percentages:
+        file = 'graph'+str(i)+'-'+str(p)+'.txt'
+        if os.path.exists(file):
+            with open(file) as f:
+                v,e = json.loads(f.readline()), json.loads(f.readline())
+                v,e = get_graph(i,p)
+                min_edge = find_solution(v,e)
+                print("num_v: ", len(v), "num_edges: ", len(e), "percentage: ", p)
+                print("min_edge: ",min_edge)
+

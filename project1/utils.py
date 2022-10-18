@@ -1,3 +1,6 @@
+import networkx as nx
+import matplotlib.pyplot as plt
+
 def get_adjacency_list(edges):
     adj_list = {}
     #print(sorted(edges))
@@ -12,8 +15,8 @@ def get_adjacency_list(edges):
         else:
             adj_list[v2].append(v1)
 
-    for k in sorted(adj_list.keys()):
-        print(k, ":", adj_list[k])
+    #for k in sorted(adj_list.keys()):
+    #    print(k, ":", adj_list[k])
 
     return adj_list
 
@@ -39,8 +42,15 @@ def show_incidence_matrix(vertexes, edges):
         y = v_list.index(e[1]) # get index of vertex 2
         inc_matrix[x][i] = 1 # change matrix from 0 to 1
         inc_matrix[y][i] = 1 # change matrix from 0 to 1
-
-    for el in inc_matrix:
-        print(el)
     
     return inc_matrix
+
+def show_graph(v,e):
+    vertexes = [vertex[0] for vertex in v]
+    print(vertexes)
+    G = nx.Graph()
+    G.add_nodes_from([0, len(v)-1])
+    for edge in e:
+        G.add_edge(vertexes.index(edge[0]),vertexes.index(edge[1]))
+    nx.draw(G, with_labels=True)
+    plt.show()

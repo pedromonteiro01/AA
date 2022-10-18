@@ -2,7 +2,7 @@
 # @Email:  pmapm@ua.pt
 
 import random, string, json
-from utils import get_adjacency_list, show_adjacency_matrix, show_incidence_matrix
+from utils import get_adjacency_list, show_adjacency_matrix, show_incidence_matrix, show_graph
 
 random.seed(97484) # seed = student number
 alphabet = list(string.ascii_letters) # get alphabet letters to use as vertex
@@ -57,7 +57,7 @@ def generate_graph(n, p): # create a graph with n vertexes and p percentage
 def write_to_file():
     percentages = [12.5, 25, 50, 75]
     for p in percentages:
-        for i in range(2,5):
+        for i in range(2,25):
             v,e = generate_graph(i,p)
             if len(e):
                 with open('graph'+str(i)+'-'+str(p)+'.txt', 'w') as f:
@@ -66,16 +66,25 @@ def write_to_file():
                     f.write(json.dumps(e))
 
 if __name__=='__main__':
-    #v = [["a", [3, 1]], ["b", [17, 9]], ["c", [15, 18]], ["d", [14, 7]], ["e", [6, 13]], ["f", [14, 10]], ["g", [5, 7]], ["h", [16, 10]], ["i", [9, 2]], ["j", [15, 16]], ["k", [13, 11]], ["l", [1, 11]], ["m", [11, 17]], ["n", [7, 10]], ["o", [16, 11]], ["p", [10, 7]], ["q", [15, 11]]]
-    #e = [["f", "g"], ["h", "f"], ["c", "g"], ["o", "d"], ["b", "k"], ["a", "q"], ["a", "e"], ["l", "k"], ["q", "p"], ["i", "e"], ["m", "e"], ["g", "n"], ["q", "j"], ["c", "e"], ["g", "m"], ["a", "p"], ["h", "k"], ["l", "p"], ["m", "b"], ["b", "l"], ["m", "a"], ["q", "e"], ["f", "c"], ["n", "k"], ["b", "j"], ["n", "q"], ["g", "i"], ["g", "o"], ["q", "f"], ["k", "f"], ["q", "m"], ["f", "a"], ["g", "e"], ["j", "m"]]
-    v,e = generate_graph(5, 50)
+    v = [["a", [1, 13]], ["b", [8, 20]], ["c", [8, 5]], ["d", [5, 1]], ["e", [20, 16]]]
+    e = [["d", "c"], ["a", "e"], ["b", "c"], ["e", "b"], ["b", "a"]]
+    e2 = [["d", "c"], ["a", "e"], ["e", "b"]]
+
+    #v,e = generate_graph(17, 12.5)
     print("Vertexes: \n",v)
     print("Edges: \n",sorted(e))
     print("num edges: ", len(e))
     print("\nAdjacency List: ")
     adj_list = get_adjacency_list(e) 
+    print("\n")
+    get_adjacency_list(e2)
     print("\nAdjacency Matrix: ")
     show_adjacency_matrix(v, e)
+    print("\n")
+    show_adjacency_matrix(v, e2)
     print("\nIncidence Matrix: ")
-    show_incidence_matrix(v,e)
-    write_to_file()
+    print(show_incidence_matrix(v,e))
+    print("\n")
+    print(show_incidence_matrix(v,e2))
+    #show_graph(v,e)
+    #write_to_file()

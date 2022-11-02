@@ -1,9 +1,12 @@
+# @Author: Pedro Monteiro
+# @Email:  pmapm@ua.pt
+
 import networkx as nx
 import matplotlib.pyplot as plt
 
 def get_adjacency_list(edges):
     adj_list = {}
-    #print(sorted(edges))
+    
     for v1, v2 in edges:
         if v1 not in adj_list.keys():
             adj_list[v1] = list(v2)
@@ -14,9 +17,6 @@ def get_adjacency_list(edges):
             adj_list[v2] = list(v1)
         else:
             adj_list[v2].append(v1)
-
-    #for k in sorted(adj_list.keys()):
-    #    print(k, ":", adj_list[k])
 
     return adj_list
 
@@ -32,6 +32,8 @@ def show_adjacency_matrix(vertexes, edges):
 
     for el in adj_matrix:
         print(el)
+    
+    return adj_matrix
 
 def show_incidence_matrix(vertexes, edges):
     inc_matrix = [[0 for _ in range(len(edges))]for _ in range(len(vertexes))] # start matrix with 0's
@@ -45,12 +47,14 @@ def show_incidence_matrix(vertexes, edges):
     
     return inc_matrix
 
-def show_graph(v,e):
-    vertexes = [vertex[0] for vertex in v]
-    print(vertexes)
+def show_graph(e):
     G = nx.Graph()
-    G.add_nodes_from([0, len(v)-1])
     for edge in e:
-        G.add_edge(vertexes.index(edge[0]),vertexes.index(edge[1]))
-    nx.draw(G, with_labels=True)
+        G.add_edge(edge[0],edge[1])
+    nx.draw(G, node_size=700 , with_labels=True)
+    plt.show()
+
+def show_results_graph():
+    plt.plot([0, 1, 2, 3, 4, 5], [0, 1, 4, 9, 16, 25])
+    plt.grid()
     plt.show()

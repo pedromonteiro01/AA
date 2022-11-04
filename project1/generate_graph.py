@@ -57,7 +57,7 @@ def generate_graph(n, p): # create a graph with n vertexes and p percentage
 def write_to_file():
     percentages = [12.5, 25, 50, 75]
     for p in percentages:
-        for i in range(2,25):
+        for i in range(2,52):
             v,e = generate_graph(i,p)
             if len(e):
                 with open('graph'+str(i)+'-'+str(p)+'.txt', 'w') as f:
@@ -87,4 +87,4 @@ if __name__=='__main__':
     print("\n")
     print(show_incidence_matrix(v,e2))
     #show_graph(v,e)
-    #write_to_file()
+    write_to_file()

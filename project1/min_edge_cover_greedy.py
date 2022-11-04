@@ -49,7 +49,7 @@ def find_solution(v,e):
     # get ordered vertexes with less edges
     sort_vertex_by_num_edges = dict(sorted(adj_list.items(), key=lambda item: len(item[1])))
 
-    min_edge = 0
+    min_edge = 0 
     for vertex in sort_vertex_by_num_edges.keys():
         iterations += 1
         if vertex not in associated_vertices:
@@ -62,6 +62,7 @@ def find_solution(v,e):
                     adj_list2[vertex].remove(min_vertex)
                 else:
                     break
+                
                 min_vertex = get_vertex_with_less_edges(adj_list2, sort_vertex_by_num_edges[vertex]) 
             
             associated_vertices.update({vertex,min_vertex})

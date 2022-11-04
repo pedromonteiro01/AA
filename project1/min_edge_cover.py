@@ -16,6 +16,9 @@ def get_graph(n,p):
             return json.loads(f.readline()), json.loads(f.readline())
 
 def find_solution(v,e):
+    stop = False
+    min_edge = 0
+    solutions = []
     for i in range(1, len(v)+1):
         for data in itertools.combinations(e, i): # get all subsets of edges
             temp_set = set()
@@ -24,9 +27,14 @@ def find_solution(v,e):
                 temp_set.update({item[0], item[1]}) # add {'x1', 'x2} to set
                 
                 if len(v) == len(temp_set): # only covering edges here!
-                    return i
+                    solutions.append(data)
+                    min_edge = i
+                    stop = True
 
-    return None
+        if stop: 
+            break
+
+    return min_edge, len(solutions)
 
 def find_solution_with_inc_matrix(v,e):
     v_list = [vertex[0] for vertex in v] # set with all vertexes
@@ -51,9 +59,9 @@ with open('brute_force_results.txt', 'w') as result_file:
                     #end = (time.time() - start)
                     #inc_matrix = show_incidence_matrix(v,e)
                     start = time.time()
-                    min_edge = find_solution_with_inc_matrix(v,e)
+                    min_edge, solutions = find_solution(v,e)
                     end = (time.time() - start)
                     #result_file.write("%s %10s %10s %10s %10s\n" % (len(v), p, len(e), min_edge, end))
                     print("num_v: ", len(v), "num_edges: ", len(e), "percentage: ", p)
-                    print("min_edge: ",min_edge)
+                    print("min_edge: ",min_edge, "solutions: ", solutions)
                     print(end)

@@ -57,7 +57,7 @@ def generate_graph(n, p): # create a graph with n vertexes and p percentage
 def write_to_file():
     percentages = [12.5, 25, 50, 75]
     for p in percentages:
-        for i in range(2,52):
+        for i in [3,4,5,7,8,9,10,11,12,13,14,15,16,17,18,19,20]:
             v,e = generate_graph(i,p)
             if len(e):
                 with open('graph'+str(i)+'-'+str(p)+'.txt', 'w') as f:

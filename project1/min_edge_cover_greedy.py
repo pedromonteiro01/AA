@@ -55,17 +55,21 @@ def find_solution(v,e):
         if vertex not in associated_vertices:
             min_edge += 1
             min_vertex = get_vertex_with_less_edges(adj_list, sort_vertex_by_num_edges[vertex])
+            iterations+=len(sort_vertex_by_num_edges[vertex])
 
             while min_vertex in associated_vertices:
                 adj_list2 = adj_list.copy()
                 if min_vertex in adj_list2[vertex]:
                     adj_list2[vertex].remove(min_vertex)
+                    iterations += 1
                 else:
                     break
                 
                 min_vertex = get_vertex_with_less_edges(adj_list2, sort_vertex_by_num_edges[vertex]) 
+                iterations+=len(sort_vertex_by_num_edges[vertex])
             
             associated_vertices.update({vertex,min_vertex})
+            iterations += 1
 
         if len(associated_vertices) == len(v):
             break
@@ -75,7 +79,7 @@ def find_solution(v,e):
 percentages = [12.5, 25, 50, 75]
 with open('greedy_results.txt', 'w') as f:
     f.write(f"n \t\tpercentage \t\tedges \t\tmin_edge \t\ttime \t\titerations\n")
-    for i in range(4, 52):
+    for i in range(3, 52):
         for p in percentages:
             file = 'graph'+str(i)+'-'+str(p)+'.txt'
             if os.path.exists(file):
@@ -85,7 +89,7 @@ with open('greedy_results.txt', 'w') as f:
                     start = time.time()
                     min_edge, iterations = find_solution(v,e)
                     end = (time.time() - start)
-                    f.write(f"{len(v)} \t\t{p} \t\t{len(e)} \t\t{min_edge} \t\t{end} \t\t{iterations}\n")
+                    f.write(f"{len(v)} {p} {len(e)} {min_edge} {end} {iterations}\n")
                     print("num_v: ", len(v), "num_edges: ", len(e), "percentage: ", p)
                     print(min_edge)
                     print(end)

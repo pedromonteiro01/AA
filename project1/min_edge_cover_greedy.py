@@ -58,10 +58,10 @@ def find_solution(v,e):
             iterations+=len(sort_vertex_by_num_edges[vertex])
 
             while min_vertex in associated_vertices:
+                iterations += 1
                 adj_list2 = adj_list.copy()
                 if min_vertex in adj_list2[vertex]:
                     adj_list2[vertex].remove(min_vertex)
-                    iterations += 1
                 else:
                     break
                 
@@ -69,7 +69,6 @@ def find_solution(v,e):
                 iterations+=len(sort_vertex_by_num_edges[vertex])
             
             associated_vertices.update({vertex,min_vertex})
-            iterations += 1
 
         if len(associated_vertices) == len(v):
             break
@@ -90,6 +89,3 @@ with open('greedy_results.txt', 'w') as f:
                     min_edge, iterations = find_solution(v,e)
                     end = (time.time() - start)
                     f.write(f"{len(v)} {p} {len(e)} {min_edge} {end} {iterations}\n")
-                    print("num_v: ", len(v), "num_edges: ", len(e), "percentage: ", p)
-                    print(min_edge)
-                    print(end)

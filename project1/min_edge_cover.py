@@ -55,10 +55,10 @@ def find_solution(v,e):
 
     return min_edge, len(solutions), operations, conf_tested
 
-percentages = [50]
+percentages = [12.5, 25, 50, 75]
 with open('brute_force_results.txt', 'w') as result_file:
     result_file.write(f"n \t\tpercentage \t\tedges \t\tmin_edge \t\ttime \t\operations \t\tsolutions \t\tconfigurations\n")
-    for i in range(15,16):
+    for i in range(3,16):
         for p in percentages:
             file = 'graph'+str(i)+'-'+str(p)+'.txt'
             if os.path.exists(file):
@@ -68,4 +68,5 @@ with open('brute_force_results.txt', 'w') as result_file:
                     start = time.time()
                     min_edge, solutions, operations, configurations = find_solution(v,e)
                     end = (time.time() - start)
-                    result_file.write(f"{len(v)} {p} {len(e)} {min_edge} {end} {operations} {solutions} {configurations}\n")
+                    print(v, len(e), min_edge, end, operations, solutions, configurations)
+                    #print(f"{len(v)} {p} {len(e)} {min_edge} {end} {operations} {solutions} {configurations}\n")

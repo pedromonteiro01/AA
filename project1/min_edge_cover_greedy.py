@@ -88,4 +88,6 @@ with open('greedy_results.txt', 'w') as f:
                     start = time.time()
                     min_edge, iterations = find_solution(v,e)
                     end = (time.time() - start)
-                    f.write(f"{len(v)} {p} {len(e)} {min_edge} {end} {iterations}\n")
+                    print(v, len(e), min_edge, end, iterations)
+
+                    print(f"{len(v)} {p} {len(e)} {min_edge} {end} {iterations}\n")

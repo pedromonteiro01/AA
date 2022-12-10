@@ -1,3 +1,4 @@
+from math import log2
 import os, json, random, time, itertools
 
 def get_graph(n,p):
@@ -22,13 +23,12 @@ def get_new_graph():
 def get_edges_number(e):
     return len(e)
 
-
 def randomized_search(v,e):
     operations = 0 # initialize operations counter variable
     edges_copy = e[:] # copy edges list
     unique_vertices = set()
     min_edge = 0
-    operations += 4
+    operations += 3
     while len(unique_vertices) != len(v): # while all vertices are not chosen - O(v) vezes
         selected_edge = random.choice(edges_copy) # pick a random edge
         operations += 1
@@ -42,20 +42,22 @@ def randomized_search(v,e):
 
 percentages = [12.5, 25, 50, 75]
 with open('randomized_results.txt', 'w') as result_file:
-    #result_file.write(f"n \t\t\tpercentage \t\t\tedges \t\t\t\tmin_edge \t\t\t\toperations \t\ttime \n")
+    result_file.write(f"n \t\t\tpercentage \t\t\tedges \t\t\t\tmin_edge \t\t\t\toperations \t\ttime \n")
     for n in range(3,21):
         for p in percentages:
             file = 'graph'+str(n)+'-'+str(p)+'.txt'
             if os.path.exists(file):
                 with open(file) as f:
-                    v,e = json.loads(f.readline()), json.loads(f.readline())
+                    v,e = get_graph(n,p)
 
                     min_prev=9999999999999 # set variable high to be updated
                     num_edges = get_edges_number(e) # get edges number -> len(e)
-                    num_simulations = max([20000, round(0.2 * 2**(num_edges)-1)]) # calculate number of simulations, using 60%
-                    #print("Iterations: ", num_simulations)
+                    combinations = 2**(num_edges)-1
+                    print("log2: ", log2(combinations))
+                    num_simulations = max([100, round(log2(combinations)*num_edges*len(v)*10)]) # calculate number of simulations, using 60%
+                    print("Iterations: ", num_simulations)
                     start = time.time()
-                    timeout = time.time() + 60*2   # 2 minutes from now
+                    timeout = time.time() + 60*5   # 5 minutes from now
                     for i in range(num_simulations):
                         min_edge, operations = randomized_search(v,e) # perform randomized search
                         if min_edge < min_prev: # update min edge value when is less than the previous one
@@ -64,5 +66,5 @@ with open('randomized_results.txt', 'w') as result_file:
                             print("exceeded time")
                             break
                     end = time.time()
-                    #result_file.write(f"{len(v)} \t\t\t{p} \t\t\t\t\t{len(e)} \t\t\t\t\t{min_prev} \t\t\t\t\t\t{operations} \t\t\t\t{end - start}\n")
+                    result_file.write(f"{len(v)} \t\t\t{p} \t\t\t\t\t{len(e)} \t\t\t\t\t{min_prev} \t\t\t\t\t\t{operations} \t\t\t\t{end - start}\n")
                     print("Vertices: ", len(v),"%: ", p,"time: ", end - start, "min edge: ", min_prev, "operations: ", operations)

@@ -10,7 +10,7 @@ from utils import get_adjacency_list, show_incidence_matrix
 
 
 def get_new_graph():
-    file = 'SWmediumG.txt'
+    file = 'SWtinyG.txt'
     edges = []
     vertices = set()
     if os.path.exists(file):

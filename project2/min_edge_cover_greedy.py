@@ -9,13 +9,13 @@ import os
 from utils import get_adjacency_list
 
 def get_new_graph():
-    file = 'lastfm_asia_edges.csv'
+    file = 'SWtinyG.txt'
     edges = []
     vertices = set()
     if os.path.exists(file):
         with open(file) as f:
             for line in f:
-                line = line.strip().split(",")
+                line = line.strip().split(" ")
                 edges.append([line[0], line[1]])
                 vertices.update({line[0], line[1]})
 
@@ -89,4 +89,4 @@ start = time.time()
 min_edge, iterations = find_solution(v,e)
 end = (time.time() - start)
 
-print(f"{len(v)} {len(e)} {min_edge} {end} {iterations}\n")
+print(f"vertices: {len(v)} edges: {len(e)} minedge: {min_edge} time: {end} operations: {iterations}\n")

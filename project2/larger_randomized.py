@@ -7,7 +7,7 @@ def get_graph(n,p):
             return json.loads(f.readline()), json.loads(f.readline())
 
 def get_new_graph():
-    file = 'SWmediumG.txt'
+    file = 'SWtinyG.txt'
     edges = []
     vertices = set()
     if os.path.exists(file):
@@ -45,15 +45,17 @@ def randomized_search(v,e):
 v,e = get_new_graph()
 min_prev=9999999999999 # set variable high to be updated
 num_edges = get_edges_number(e) # get edges number -> len(e)
-num_simulations = 10000000 # set number of simulations
+num_simulations = 1000000 # set number of simulations
 start = time.time()
-timeout = time.time() + 60*45   # 2 minutes from now
+timeout = time.time() + 60*20   # 2 minutes from now
 solutions = set()
+operations_number = 0
 for i in range(num_simulations):
     min_edge, operations, solution = randomized_search(v,e) # perform randomized search
     while solution in solutions:
         min_edge, operations, solution = randomized_search(v,e) # prevent from test same solution
 
+    operations_number += operations
     solutions.add(tuple(solution))
     if min_edge < min_prev: # update min edge value when is less than the previous one
         min_prev = min_edge

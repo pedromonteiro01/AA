@@ -1,0 +1,7 @@
+Most Frequent Letters with k = 5
+
+E - 78117
+T - 56723
+O - 48695
+A - 48478
+H - 41920

@@ -15,7 +15,7 @@ for letter in letters:
 
 data_stream = [3, 5, 10]
 for k in data_stream:
-    with open(f"exact_counter-{k}.txt", "w") as f:
+    with open(f"exact_counter_results/exact_counter-{k}.txt", "w") as f:
         f.write(f"Most Frequent Letters with k = {k}\n\n")
         sorted_letters = sorted(letter_counts.items(), key=lambda x: x[1], reverse=True)[:k]
 

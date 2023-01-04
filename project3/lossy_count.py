@@ -8,7 +8,7 @@ def lossy_count(letters, epsilon, sigma):
     
     counters = {}
 
-    # initialize counters for each letter
+    # initialize each letter counter
     for letter in letters:
         if letter not in counters:
             counters[letter] = 0
@@ -18,15 +18,14 @@ def lossy_count(letters, epsilon, sigma):
     buckets = [letters[i:i+w] for i in range(1, len(letters)+1, w)]
     
     for bucket in buckets:
-        # increment counters for each letter in the bucket
+        # increment each letter counter in the bucket
         for letter in bucket:
             counters[letter] += 1
         
         # decrement all counters by 1
         for letter in counters:
             counters[letter] -= 1
-    
-    # return frequent letters
+
     frequent_letters = {}
     for letter, count in counters.items():
         if count >= sigma:

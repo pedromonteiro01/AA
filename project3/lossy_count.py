@@ -6,12 +6,12 @@ def lossy_count(letters, epsilon, sigma):
     #              smaller values means that the counters for each letter will be updated less frequently
     #               => the algorithm will be less accurate
     
-    counters = {}
+    letter_counters = {} # save all letters and counters
+    frequent_letters = {} # save only letters that are frequent, using sigma to verify
 
-    # initialize each letter counter
     for letter in letters:
-        if letter not in counters:
-            counters[letter] = 0
+        if letter not in letter_counters:
+            letter_counters[letter] = 0 # initialize each letter counter
     
     # create buckets of width w
     w = int(1/epsilon)
@@ -20,22 +20,22 @@ def lossy_count(letters, epsilon, sigma):
     for bucket in buckets:
         # increment each letter counter in the bucket
         for letter in bucket:
-            counters[letter] += 1
+            letter_counters[letter] += 1
         
         # decrement all counters by 1
-        for letter in counters:
-            counters[letter] -= 1
+        for letter in letter_counters:
+            letter_counters[letter] -= 1
 
-    frequent_letters = {}
-    for letter, count in counters.items():
-        if count >= sigma:
-            frequent_letters[letter] = count
+    for letter, value in letter_counters.items():
+        if value >= sigma:
+            frequent_letters[letter] = value
     
     return frequent_letters
 
 # get letters from file
 letters = get_upper_letters("pg69638.txt")
 
+# get frequent letters with lossy count function
 frequent_letters = lossy_count(letters, 0.001, 15)
 
 k_values = [3, 5, 10]

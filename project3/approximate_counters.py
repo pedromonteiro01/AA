@@ -8,6 +8,7 @@ letters = get_upper_letters("pg69638.txt")
 letter_counts = {}
 
 for letter in letters:
+    # increment counter with probability 1/4
     if random.random() < 1/4:
         if letter in letter_counts:
             letter_counts[letter] += 1

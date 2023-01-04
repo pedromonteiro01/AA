@@ -36,7 +36,7 @@ def lossy_count(letters, epsilon, sigma):
 letters = get_upper_letters("pg69638.txt")
 
 # get frequent letters with lossy count function
-frequent_letters = lossy_count(letters, 0.001, 15)
+frequent_letters = lossy_count(letters, 0.001, 20000)
 
 k_values = [3, 5, 10]
 for k in k_values:
